@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #9f3535;
+    color: white;
+    font-family: sans-serif;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    width: 100vw;
+    height: 100vh;
+}
+
+#url {
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid white;
+
+}
+
+input {
+    border-radius: 50px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    padding: 10px;
+}
+
+label {
+    padding: 10px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.text-label {
+    width: 25%;
+    padding-right: 1px;
+}
+
+.text-input {
+    width: 100%;
+}
+
+.half-width {
+    width: 50%;
+} 
+
+
+
+#qr-form {
+    width: 80%;
+    max-width: 410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 25%;
+}
+
+input[type="color"] {
+    padding: 4px;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 2px solid white;
+    background-color: inherit;
+
+}
+
+input[type="color"]:hover, input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.form-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-group, input[type="submit"] {
+    background-color: white;
+    border-radius: 100px;
+    color: #651818;
+}
+
+input[type="submit"] {
+    font-weight: 600;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+#qr-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#download-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font: 600 16px sans-serif;
+}
