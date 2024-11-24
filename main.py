@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Response
-from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from urllib import parse
 import uvicorn
@@ -40,7 +39,7 @@ async def handler_qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="
     qr_code = generate_qr_code(url, size, padding, qrcolor, bgcolor)
 
     if qr_code:
-        return StreamingResponse(
+        return Response(
             qr_code,
             media_type="image/png",
             headers={"Content-Disposition": f"attachment; filename=qr.png"},
