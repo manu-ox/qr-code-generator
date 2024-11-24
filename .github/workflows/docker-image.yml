@@ -5,9 +5,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
+  build_and_push_docker_image:
+    
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +23,25 @@ jobs:
 
     - name: Push Docker image
       run: docker push manukrishnaos/qr-code-generator
+
+  deploy_to_server:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Pull Docker image on the server
+      run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'docker pull manukrishnaos/qr-code-generator'
+    
+    - name: Stop running container
+      run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}'
+    
+    - name: Remove container
+      run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'docker rm ${{ secrets.DOCKER_CONTAINER_NAME }}'
+    
+    - name: Run container
+      run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'docker run -dt -p ${{ secrets.PORT }}:8000 --name ${{ secrets.DOCKER_CONTAINER_NAME }} manukrishnaos/qr-code-generator'
