@@ -31,8 +31,8 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
-        script: |
-          docker pull manukrishnaos/qr-code-generator
-          docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
-          docker rm ${{ secrets.DOCKER_CONTAINER_NAME }}
-          docker run -dt -p ${{ secrets.PORT }}:8000 --name ${{ secrets.DOCKER_CONTAINER_NAME }} manukrishnaos/qr-code-generator
+        script: /bin/sh scripts/deploy-qr.sh
+          # docker pull manukrishnaos/qr-code-generator
+          # docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
+          # docker rm ${{ secrets.DOCKER_CONTAINER_NAME }}
+          # docker run -dt -p ${{ secrets.PORT }}:8000 --name ${{ secrets.DOCKER_CONTAINER_NAME }} manukrishnaos/qr-code-generator
