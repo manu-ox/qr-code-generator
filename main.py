@@ -21,15 +21,6 @@ app.mount("/static", StaticFiles(directory="static/"), name="static")
 home_page = get_home_page()
 
 
-@app.get("/")
-async def qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", bgcolor: str="white"):
-    if not url:
-        return home_page
-    
-    return get_qr_page(
-        f"/qr/?size={size}&padding={padding}&url={url}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
-    )
-    
 
 @app.get("/qr/")
 async def handler_qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", bgcolor: str="white"):
@@ -47,6 +38,16 @@ async def handler_qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="
         )
     else:
         return Response("QR code generation failed", status_code=500)
+
+
+@app.get("/")
+async def qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", bgcolor: str="white"):
+    if not url:
+        return home_page
+    
+    return get_qr_page(
+        f"/qr/?size={size}&padding={padding}&url={url}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
+    )
 
 
 @app.get("/{other_routes}/")
