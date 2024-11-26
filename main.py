@@ -27,7 +27,7 @@ async def qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", 
         return home_page
     
     return get_qr_page(
-        f"/qr?size={size}&padding={padding}&url={url}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
+        f"/qr/?size={size}&padding={padding}&url={url}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
     )
     
 
