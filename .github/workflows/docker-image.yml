@@ -31,6 +31,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
+        timeout: 120s
         script: /bin/sh scripts/deploy-qr.sh
           # docker pull manukrishnaos/qr-code-generator
           # docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
