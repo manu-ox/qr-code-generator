@@ -23,14 +23,14 @@ jobs:
 
     - name: Push Docker image
       run: docker push manukrishnaos/qr-code-generator
-      
+
 
     - name: Deploy to server
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        password: ${{ secrets.SERVER_PASSWORD }}
         script: |
           docker pull manukrishnaos/qr-code-generator
           docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
