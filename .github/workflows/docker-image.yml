@@ -36,8 +36,8 @@ jobs:
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.SERVER_IP }}
-        username: mk
-        password: ${{ secrets.SERVER_PASSWORD }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         # script: /bin/sh scripts/deploy-qr.sh
         script: |
