@@ -1,12 +1,12 @@
-name: Docker Image CI
+name: Deploy
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build_and_push_docker_image:
-    
+  updateDockerImage:
+    name: Update Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -26,22 +26,22 @@ jobs:
 
     
   deploy:
-    name: Deploy
+    name: Deployment
     runs-on: ubuntu-latest
-    needs: build_and_push_docker_image
+
+    needs: updateDockerImage
 
     steps:
 
-    - name: remote ssh command
+    - name: Remote ssh command
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        # script: /bin/sh scripts/deploy-qr.sh
+
         script: |
           sudo docker pull manukrishnaos/qr-code-generator
           sudo docker stop ${{ secrets.DOCKER_CONTAINER_NAME }}
           sudo docker rm ${{ secrets.DOCKER_CONTAINER_NAME }}
-          sudo docker run -dt -p ${{ secrets.PORT }}:8000 --name ${{ secrets.DOCKER_CONTAINER_NAME }} manukrishnaos/qr-code-generator
+          sudo docker run -dt -p ${{ secrets.APP_PORT }}:8000 --name ${{ secrets.DOCKER_CONTAINER_NAME }} manukrishnaos/qr-code-generator
