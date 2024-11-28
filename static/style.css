@@ -39,7 +39,7 @@ input:focus {
 }
 
 .text-label {
-    width: 25%;
+    width: 60px;
     padding-right: 1px;
 }
 
@@ -81,6 +81,7 @@ input[type="color"]:hover, input[type="submit"]:hover {
 .form-line {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .input-group, input[type="submit"] {
@@ -91,6 +92,7 @@ input[type="color"]:hover, input[type="submit"]:hover {
 
 input[type="submit"] {
     font-weight: 600;
+    margin-top: 10px;
 }
 
 .pointer {
