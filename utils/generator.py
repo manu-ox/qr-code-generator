@@ -4,6 +4,8 @@ import logging
 
 
 def generate_qr_code(url, size, padding, color, bgcolor) -> bytes | bool:
+    """QR code generator"""
+
     try:
         qr = QRCode(box_size=size, border=padding, mask_pattern=1)
         qr.add_data(url)

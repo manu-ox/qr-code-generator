@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Response
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from urllib import parse
 import uvicorn
 from utils.generator import generate_qr_code
@@ -16,16 +17,19 @@ app = FastAPI(
     redoc_url=None
 )
 
-app.mount("/static", StaticFiles(directory="static/"), name="static")
+# Mound stacic files
+app.mount("/static", StaticFiles(directory="static/"))
 
-home_page = get_home_page()
-
+# home page content
+home_page: HTMLResponse = get_home_page()
 
 
 @app.get("/qr/")
-async def handler_qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", bgcolor: str="white"):
+async def handler_qr(url: str=None, size: int=10, padding: int=1, qrcolor: str="black", bgcolor: str="white"):
+    """QR api route"""
+
     if not url:
-        home_page
+        return Response("Attribute 'url' is required", status_code=400)
     
     qr_code = generate_qr_code(url, size, padding, qrcolor, bgcolor)
 
@@ -41,18 +45,20 @@ async def handler_qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="
 
 
 @app.get("/")
-async def qr(size: int=10, padding: int=2, url: str=None, qrcolor: str="black", bgcolor: str="white"):
+async def qr(url: str=None, size: int=10, padding: int=1, qrcolor: str="black", bgcolor: str="white"):
+    """Home page route"""
+
     if not url:
         return home_page
     
     return get_qr_page(
-        f"/qr/?size={size}&padding={padding}&url={url}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
+        f"/qr/?url={url}&size={size}&padding={padding}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
     )
 
 
 @app.get("/{other_routes}/")
 async def handler_other_routes(other_routes: str):
-    return Response(f"You are in the wrong route!, {other_routes}")
+    return Response(f"You are in the wrong route!, {other_routes}", status_code=404)
 
 
 if __name__ == "__main__":
