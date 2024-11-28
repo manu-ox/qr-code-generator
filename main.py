@@ -51,6 +51,7 @@ async def qr(url: str=None, size: int=10, padding: int=1, qrcolor: str="black", 
     if not url:
         return home_page
     
+    # Redirect to qr page
     return get_qr_page(
         f"/qr/?url={url}&size={size}&padding={padding}&qrcolor={parse.quote(qrcolor)}&bgcolor={parse.quote(bgcolor)}"
     )
