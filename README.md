@@ -1,1 +1,1 @@
-Simple QR code generator in python.
+### Simple QR code generator in python.
