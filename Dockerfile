@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expose app port 
 EXPOSE 8000
 
-CMD ["fastapi", "run", "main.py"]
+CMD ["python", "-m", "qr_app"]
