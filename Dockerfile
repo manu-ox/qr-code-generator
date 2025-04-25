@@ -1,7 +1,7 @@
 FROM python:3.12-alpine
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /root/app
 
 # Copy all files
 COPY . .

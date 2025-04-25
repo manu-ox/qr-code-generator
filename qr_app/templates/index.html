@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Generator</title>
+
+    <link rel="icon" href="static/favicon.ico">
+
+    <script>
+        let qrUrl = null;
+        let qrDesign = null;
+
+        function removeQr() {
+            const qrCode = document.getElementById("qr-code");
+            if (qrCode) qrCode.remove()
+            const downloadButton = document.getElementById("download-button");
+            if (downloadButton) downloadButton.remove()
+        }
+
+        async function generateQr() {
+            const form = document.getElementById("qr-form");
+            const formData = new FormData(form);
+            
+            if (!formData.get("content")) return alert("Enter some content!");
+
+            document.getElementById("image-container").className = "image-container-enabled";
+            removeQr();
+            
+            const qr = await fetch("/generate/", {
+                method: "POST",
+                body: formData
+            });
+
+            if (qrUrl) {
+                URL.revokeObjectURL(qrUrl);
+            }
+
+            const qrBlob = await qr.blob();
+            qrUrl = URL.createObjectURL(qrBlob);
+            qrDesign = formData.get("design");
+            
+            const image = document.createElement("img");
+            image.id = "qr-code";
+            image.src = qrUrl;
+            image.height = 200;
+            image.width = 200;
+            image.alt = "QR Code Image";
+            
+            const downloadButton = document.createElement("input");
+            downloadButton.type = "button";
+            downloadButton.value = "Download";
+            downloadButton.id = "download-button";
+
+            downloadButton.onclick = downloadQr;
+            
+            document.getElementById("image-container").appendChild(image);
+            document.getElementById("image-container").appendChild(downloadButton);
+        }
+
+        function downloadQr() {
+            if (! qrUrl) return alert("No QR code generated!");
+
+            const link = document.createElement("a");
+            link.href = qrUrl;
+            link.download = `qr-${qrDesign}.png`;
+            link.click();
+        }
+
+        function designSelectionEvent() {
+            if (document.getElementById("design").value === "square") {
+                document.getElementById("color-settings").style.display = 'flex';
+            } else {
+                document.getElementById("color-settings").style.display = 'none';
+            }
+        }
+
+    </script>
+
+    <style>
+        .form-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+            height: 50px;
+            color: white;
+        }
+        .line-element {
+            margin: 0 10px;
+        }
+        input, select {
+            appearance: none;
+            --webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+        input[type="color"] {
+            padding: 4px;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50px;
+            box-sizing: border-box;
+            border: 2px solid white;
+            background-color: inherit;
+        }
+        .image-container-enabled {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            height: 300px;
+        }
+        #download-button {
+            margin: 10px 0px -10px;
+        }
+        input[type="button"]:active {
+            scale: 0.95;
+        }
+    </style>
+</head>
+<body style="padding: 0;margin: 0;min-height: 100vh; background-color: rgb(214, 82, 82); display: flex; justify-content: center; align-items: center; font-family: sans-serif;">
+
+    <div id="container">
+
+        <div id="image-container">
+        </div>
+    
+        <div id="form-container" style="border: 2px solid black; border-radius: 10px; padding: 10px;">
+            <form id="qr-form">
+                <div class="form-line">
+                    <input class="text-input" type="text" name="content" required autofocus placeholder="Text/Url" style="text-align: center; width: 50vw; min-width: 300px; max-width: 600px; height: 30px;">
+                </div>
+    
+                
+                <details>
+                    <summary style="cursor: pointer;">Customize</summary>
+    
+                    <div class="form-line">
+                        <div class="line-element">
+                            <label for="size">QR Size:</label>
+                            <input type="number" name="size" id="size" min="10" max="50" value="10">
+                        </div>
+                        <div class="line-element">
+                            <label for="padding">Border Size:</label>
+                            <input type="number" name="padding" id="padding" min="1" max="10" value="1" >
+                        </div>
+                    </div>
+                    
+                    <div id="color-settings" class="form-line">
+                        <div class="line-element">
+                            <label for="qrcolor">QR Color:</label>
+                            <input type="color" name="qrcolor" id="qrcolor" value="#000000">
+                        </div>
+                        <div class="line-element">
+                            <label for="qrcolor">Bg Color:</label>
+                            <input type="color" name="bgcolor" id="qrcolor" value="#ffffff">
+                        </div>
+                    </div>
+    
+                    <div class="form-line">
+                        <div class="line-element">
+                            <label for="design">Design:</label>
+                            <select name="design" id="design" onchange="designSelectionEvent()">
+                                <option value="square" selected>Square</option>
+                                <option value="gapped-square">Gapped Square</option>
+                                <option value="circle">Circle</option>
+                                <option value="rounded">Rounded</option>
+                                <option value="horizontal-bars">Horizontal Bars</option>
+                                <option value="vertical-bars">Vertical Bars</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                </details>
+            </form>
+        </div>
+
+        <div class="action" style="margin-top: 20px; display: flex; justify-self: center">
+            <input type="button" value="Generate" onclick="generateQr()">
+        </div>
+
+    </div>
+    
+    
+</body>
+</html>
